@@ -8,7 +8,7 @@ $.getScript(url)
 
 var googleSuccess = function() {
     var map;
-    var initialMarkers = [
+    var initialAddresses = [
         {
             address: '233 S Wacker Dr, Chicago, IL 60606'
         },
@@ -29,13 +29,20 @@ var googleSuccess = function() {
         }
     ]
 
+    var Location = function(data) {
+        this.address = ko.observable(data.address);
+    }
+
     var ViewModel = function() {
         var self = this;
 
+        self.locationList = ko.observableArray([]);
+
         mapFunctions.initMap();
 
-        initialMarkers.forEach(function(location) {
+        initialAddresses.forEach(function(location) {
             mapFunctions.geocodeAddress(location.address);
+            self.locationList.push(new Location(location));
         });
     }
 

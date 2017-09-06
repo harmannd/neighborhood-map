@@ -6,6 +6,10 @@ var mapFunctions = (function() {
             map: map,
             title: location.formatted_address
         });
+
+        marker.addListener('click', function() {
+            alert('Clicked');
+        });
     }
 
     return {
