@@ -1,3 +1,11 @@
+var url = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCwPkt_vGxPOpWyBE4w0zFLtxr2H287qSM&callback=googleSuccess';
+
+$.getScript(url)
+    .fail(function() {
+        //fail somehow
+        alert('Failed');
+    })
+
 var googleSuccess = function() {
     var map;
     var initialMarkers = [
@@ -21,50 +29,13 @@ var googleSuccess = function() {
         }
     ]
 
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 13,
-            center: {lat: 41.8781, lng: -87.6298}
-        });
-    }
-
-    function createMarker(location) {
-        var marker = new google.maps.Marker({
-            position: location.geometry.location,
-            map: map,
-            title: location.formatted_address
-        });
-    }
-
-    function geocodeAddress(address) {
-        var geocoder = new google.maps.Geocoder();
-
-        if (address === '') {
-            //something
-            alert('Empty address');
-        }
-        else {
-            geocoder.geocode({
-                address: address
-            }, function(results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    createMarker(results[0]);
-                }
-                else {
-                    //something
-                    alert('Invalid location');
-                }
-            });
-        }
-    }
-
     var ViewModel = function() {
         var self = this;
 
-        initMap();
+        mapFunctions.initMap();
 
         initialMarkers.forEach(function(location) {
-            geocodeAddress(location.address);
+            mapFunctions.geocodeAddress(location.address);
         });
     }
 
