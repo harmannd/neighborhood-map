@@ -10,6 +10,10 @@
 </head>
 <body>
     <div id="panel">
+        <div>
+            <input type="text" data-bind="textInput: search">
+            <button data-bind="click: filter">Filter</button>
+        </div>
         <ul data-bind="foreach: locationList">
             <li data-bind="text: address"></li>
         </ul>

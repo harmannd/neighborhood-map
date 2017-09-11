@@ -37,6 +37,7 @@ var googleSuccess = function() {
         var self = this;
 
         self.locationList = ko.observableArray([]);
+        this.search = ko.observable("");
 
         mapFunctions.initMap();
 
@@ -44,6 +45,11 @@ var googleSuccess = function() {
             mapFunctions.geocodeAddress(location.address);
             self.locationList.push(new Location(location));
         });
+
+        self.filter = function() {
+            //filter locations
+            alert(self.search());
+        };
     }
 
     ko.applyBindings(new ViewModel());

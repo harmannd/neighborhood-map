@@ -7,9 +7,35 @@ var mapFunctions = (function() {
             title: location.formatted_address
         });
 
-        marker.addListener('click', function() {
-            alert('Clicked');
-        });
+        marker.addListener('click', markerSelected);
+    }
+
+    function markerSelected() {
+        if (this.getAnimation() !== null) {
+            this.setAnimation(null);
+            //infowindow.close(map, this);
+            //close infowindow on marker stop
+        }
+        else {
+            this.setAnimation(google.maps.Animation.BOUNCE);
+            //open infowindow
+            var contentString = '<div id="content">'+
+                '<div id="siteNotice">'+
+                '</div>'+
+                '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+                '<div id="bodyContent">'+
+                '<p><b>Uluru</b></p>'+
+                '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+                'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+                '(last visited June 22, 2009).</p>'+
+                '</div>'+
+                '</div>';
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            infowindow.open(map, this);
+        }
     }
 
     return {
