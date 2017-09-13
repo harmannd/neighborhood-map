@@ -12,16 +12,20 @@
     <div id="mySidenav" class="sidenav">
         <h1 id="title">Neighborhood</h1>
         <div>
-            <input type="text" data-bind="textInput: search">
-            <button id="filter" data-bind="click: filter">Filter</button>
+            <input type="text" data-bind="textInput: search" placeholder="Search..">
+            <button class="clickable searchButton" data-bind="click: filter">Filter</button>
+            <button class="clickable searchButton" data-bind="click: reset">Reset</button>
         </div>
 
         <div data-bind="foreach: locationList">
-            <a data-bind="text: address, click: $parent.infowindow"></a>
+            <a class="clickable" data-bind="text: address, click: $parent.infowindow, visible: searchVisible"></a>
         </div>
     </div>
 
-    <button id="hamburger" data-bind="click: openNav"></button>
+    <div id="icon">
+        <button id="hamburger" class="clickable" data-bind="click: openNav"></button>
+    </div>
+
 
     <div id="map"></div>
 

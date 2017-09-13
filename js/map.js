@@ -152,6 +152,14 @@ var mapFunctions = (function() {
                     markers[i].setAnimation(google.maps.Animation.BOUNCE);
                 }
             }
+        },
+        hideMarker: function(id) {
+            markers[id].setMap(null);
+        },
+        showMarkers: function() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
         }
     }
 

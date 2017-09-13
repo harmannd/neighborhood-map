@@ -2,26 +2,38 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #ed820e;
+    background-color: #594f4f;
 }
 
 #title {
-    color: #111;
+    color: #547980;
     margin-top: 8px;
 }
 
 #hamburger {
     background-image: url("../images/hamburger.svg");
     width: 33px;
-    height: 30px;
+    height: 31px;
+    background-position-x: -10px;
+    background-position-y: -15px;
     border: none;
     left: 10px;
     position: absolute;
-    background-color: #ed820e;
+    background-color: #594f4f;
     margin-top: 10px;
 }
 
-#hamburger:hover, .sidenav a:hover, #filter:hover {
+.searchButton {
+    background-color: #594f4f;
+    border: none;
+    color: #e5fcc2;
+}
+
+.searchButton:hover {
+    background-color: #547980;
+}
+
+.clickable:hover {
     cursor: pointer;
 }
 
@@ -33,7 +45,7 @@ html, body {
     z-index: 1; /* Stay on top */
     top: 0;
     left: 10px;
-    background-color: #ed820e; /* Black*/
+    background-color: #594f4f; /* Black*/
     overflow-x: hidden; /* Disable horizontal scroll */
 }
 
@@ -41,13 +53,13 @@ html, body {
 .sidenav a {
     padding: 8px 8px 8px 8px;
     text-decoration: none;
-    font-size: 20px;
-    color: #111;
+    font-size: 18px;
+    color: #e5fcc2;
     display: block;
 }
 
 .sidenav a:hover {
-    color: white;
+    color: #9de0ad;
 }
 
 #map {
