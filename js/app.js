@@ -7,25 +7,24 @@ $.getScript(url)
     })
 
 var googleSuccess = function() {
-    var map;
     var initialAddresses = [
         {
-            address: '233 S Wacker Dr, Chicago, IL 60606'
+            address: '233 S Wacker Dr'
         },
         {
-            address: '201 E Randolph St, Chicago, IL 60602'
+            address: '201 E Randolph St'
         },
         {
-            address: '600 E Grand Ave, Chicago, IL 60611'
+            address: '600 E Grand Ave'
         },
         {
-            address: '1200 S Lake Shore Dr, Chicago, IL 60605'
+            address: '1200 S Lake Shore Dr'
         },
         {
-            address: '1300 S Lake Shore Dr, Chicago, IL 60605'
+            address: '1300 S Lake Shore Dr'
         },
         {
-            address: '2045 N Lincoln Park W, Chicago, IL 60614'
+            address: '2045 N Lincoln Park W'
         }
     ]
 
@@ -35,11 +34,11 @@ var googleSuccess = function() {
 
     var ViewModel = function() {
         var self = this;
+        var addressesSet = false;
 
         self.locationList = ko.observableArray([]);
         this.search = ko.observable("");
-
-        mapFunctions.initMap();
+        this.open = ko.observable(false);
 
         initialAddresses.forEach(function(location) {
             mapFunctions.geocodeAddress(location.address);
@@ -48,8 +47,42 @@ var googleSuccess = function() {
 
         self.filter = function() {
             //filter locations
-            alert(self.search());
+            //self.search()
+            markers = mapFunctions.getMarkers();
+
         };
+
+        self.setAddresses = function() {
+            markers = mapFunctions.getMarkers();
+            for (var i = 0; i < self.locationList().length; i++) {
+                self.locationList()[i].address(markers[i].title);
+            }
+        };
+
+        self.openNav = function() {
+            if (self.open()) {
+                document.getElementById("mySidenav").style.width = "0";
+                $("#hamburger").css("left", "10px");
+                self.open(false);
+            }
+            else {
+                document.getElementById("mySidenav").style.width = "250px";
+                $("#hamburger").css("left", "260px");
+                self.open(true);
+                if (!addressesSet) {
+                    self.setAddresses();
+                    addressesSet = true;
+                }
+            }
+
+        }
+
+        //list item click to open infowindow
+        self.infowindow = function() {
+            mapFunctions.openInfoWindow(this.address());
+        }
+
+        mapFunctions.initMap(self);
     }
 
     ko.applyBindings(new ViewModel());

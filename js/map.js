@@ -1,27 +1,16 @@
 var mapFunctions = (function() {
+    var map;
+    var markers = [];
     //private
     function createMarker(location) {
         var marker = new google.maps.Marker({
             position: location.geometry.location,
             map: map,
+            animation: google.maps.Animation.DROP,
             title: location.formatted_address
         });
 
-        marker.addListener('click', markerSelected);
-    }
-
-    function markerSelected() {
-        if (this.getAnimation() !== null) {
-            this.setAnimation(null);
-            //infowindow.close(map, this);
-            //close infowindow on marker stop
-        }
-        else {
-            this.setAnimation(google.maps.Animation.BOUNCE);
-            //open infowindow
-            var contentString = '<div id="content">'+
-                '<div id="siteNotice">'+
-                '</div>'+
+        var contentString = '<div id="content">'+
                 '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
                 '<div id="bodyContent">'+
                 '<p><b>Uluru</b></p>'+
@@ -30,17 +19,30 @@ var mapFunctions = (function() {
                 '(last visited June 22, 2009).</p>'+
                 '</div>'+
                 '</div>';
-            var infowindow = new google.maps.InfoWindow({
-                content: contentString
-            });
+        marker.infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
 
-            infowindow.open(map, this);
+        marker.addListener('click', markerSelected);
+        markers.push(marker);
+    }
+
+    function markerSelected() {
+        if (this.getAnimation() !== null) {
+            this.setAnimation(null);
+            this.infowindow.close();
+            //close infowindow on marker stop
+        }
+        else {
+            this.setAnimation(google.maps.Animation.BOUNCE);
+            //open infowindow
+            this.infowindow.open(map, this);
         }
     }
 
     return {
         //public
-        initMap: function() {
+        initMap: function(viewmodal) {
             var styles = [
             {
                 "featureType": "landscape.natural",
@@ -138,6 +140,17 @@ var mapFunctions = (function() {
                         alert('Invalid location');
                     }
                 });
+            }
+        },
+        getMarkers: function() {
+            return markers;
+        },
+        openInfoWindow: function(address) {
+            for (var i = 0; i < markers.length; i++) {
+                if (markers[i].title === address) {
+                    markers[i].infowindow.open(map, markers[i]);
+                    markers[i].setAnimation(google.maps.Animation.BOUNCE);
+                }
             }
         }
     }

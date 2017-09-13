@@ -2,24 +2,65 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    background-color: #ed820e;
+}
+
+#title {
+    color: #111;
+    margin-top: 8px;
+}
+
+#hamburger {
+    background-image: url("../images/hamburger.svg");
+    width: 33px;
+    height: 30px;
+    border: none;
+    left: 10px;
+    position: absolute;
+    background-color: #ed820e;
+    margin-top: 10px;
+}
+
+#hamburger:hover, .sidenav a:hover, #filter:hover {
+    cursor: pointer;
+}
+
+/* The side navigation menu */
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0px; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0;
+    left: 10px;
+    background-color: #ed820e; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 8px 8px 8px 8px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #111;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: white;
 }
 
 #map {
     bottom:0px;
+    top: 50px;
     height: 100%;
-    left: 362px;
+    left: 50px;
     position: absolute;
     right: 0px;
 }
 
-#panel {
-    position: absolute;
-    height: 100%;
-    width: 362px;
-    background-color: #fff;
-    padding: 5px;
-    border: 1px solid #999;
-    font-family: 'Roboto','sans-serif';
-    line-height: 30px;
-    padding-left: 10px;
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
 }
