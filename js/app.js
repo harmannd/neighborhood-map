@@ -1,10 +1,9 @@
-var url = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCwPkt_vGxPOpWyBE4w0zFLtxr2H287qSM&callback=googleSuccess';
+var googleMaps = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCwPkt_vGxPOpWyBE4w0zFLtxr2H287qSM&callback=googleSuccess';
 
-$.getScript(url)
+$.getScript(googleMaps)
     .fail(function() {
-        //fail somehow
-        alert('Failed');
-    })
+        alert("Sorry, the page couldn't be loaded. Please try again later");
+    });
 
 var googleSuccess = function() {
     var initialAddresses = [
@@ -18,13 +17,13 @@ var googleSuccess = function() {
             address: '600 E Grand Ave'
         },
         {
-            address: '1200 S Lake Shore Dr'
-        },
-        {
             address: '1300 S Lake Shore Dr'
         },
         {
-            address: '2045 N Lincoln Park W'
+            address: '1400 S Lake Shore Dr'
+        },
+        {
+            address: '1901 W Madison St'
         }
     ]
 
@@ -47,18 +46,16 @@ var googleSuccess = function() {
         });
 
         self.filter = function() {
-            //filter locations
             if (self.search() === "") {
                 self.reset();
             }
             else {
                 for (var i = 0; i < self.locationList().length; i++) {
-                    if (!self.locationList()[i].address().includes(self.search())) {
+                    if (!self.locationList()[i].address().toUpperCase().includes(self.search().toUpperCase())) {
                         self.locationList()[i].searchVisible(false);
                         mapFunctions.hideMarker(i);
                     }
                 }
-                //remove markers
             }
         };
 
@@ -66,7 +63,6 @@ var googleSuccess = function() {
             for (var i = 0; i < self.locationList().length; i++) {
                 self.locationList()[i].searchVisible(true);
             }
-            //reset markers
             mapFunctions.showMarkers();
         };
 
@@ -95,7 +91,6 @@ var googleSuccess = function() {
 
         }
 
-        //list item click to open infowindow
         self.infowindow = function() {
             mapFunctions.openInfoWindow(this.address());
         }
