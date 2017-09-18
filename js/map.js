@@ -11,7 +11,9 @@ var mapFunctions = (function() {
             title: location.formatted_address
         });
 
-        marker.addListener('click', markerSelected);
+        marker.addListener('click', function() {
+            markerSelected(this);
+        });
         markers.push(marker);
     }
 
@@ -35,28 +37,30 @@ var mapFunctions = (function() {
             });
     }
 
-    function markerSelected() {
-        if (this.getAnimation() !== null) {
-            this.setAnimation(null);
-            this.infowindow.close();
+    function markerSelected(marker) {
+        if (marker.getAnimation() !== null) {
+            marker.setAnimation(null);
+            marker.infowindow.close();
         }
         else {
-            this.setAnimation(google.maps.Animation.BOUNCE);
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            determineInfowindow(marker);
+            marker.infowindow.open(map, marker);
+        }
+    }
 
-            //Determine what infowindow to attach to this marker based on shortened lat longs.
-            var markerPosition = String(this.position).slice(1, -1);
-            var lat = markerPosition.split(",")[0].substring(0, 5);
-            var lng = markerPosition.split(",")[1].substring(1, 7);
-            var markerLatlng = lat + "," + lng;
-            for (var i = 0; i < Object.keys(infoWindows).length; i++) {
-                if (Object.keys(infoWindows)[i] === markerLatlng) {
-                    this.infowindow = new google.maps.InfoWindow({
-                        content: infoWindows[Object.keys(infoWindows)[i]]
-                    });
-                }
+    //Determine what infowindow to attach to this marker based on shortened lat longs.
+    function determineInfowindow(marker) {
+        var markerPosition = String(marker.position).slice(1, -1);
+        var lat = markerPosition.split(",")[0].substring(0, 5);
+        var lng = markerPosition.split(",")[1].substring(1, 7);
+        var markerLatlng = lat + "," + lng;
+        for (var i = 0; i < Object.keys(infoWindows).length; i++) {
+            if (Object.keys(infoWindows)[i] === markerLatlng) {
+                marker.infowindow = new google.maps.InfoWindow({
+                    content: infoWindows[Object.keys(infoWindows)[i]]
+                });
             }
-
-            this.infowindow.open(map, this);
         }
     }
 
@@ -157,8 +161,7 @@ var mapFunctions = (function() {
         openInfoWindow: function(address) {
             for (var i = 0; i < markers.length; i++) {
                 if (markers[i].title === address) {
-                    markers[i].infowindow.open(map, markers[i]);
-                    markers[i].setAnimation(google.maps.Animation.BOUNCE);
+                    markerSelected(markers[i]);
                 }
             }
         },
