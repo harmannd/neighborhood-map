@@ -13,15 +13,18 @@
     <div id="mySidenav" class="sidenav">
         <h1 id="title">Neighborhood</h1>
         <div>
-            <input type="text" data-bind="textInput: search" placeholder="Search..">
+            <input type="text" data-bind="textInput: searchValue" placeholder="Search..">
+            <!-- <button class="clickable searchButton" data-bind="click: filter">Filter</button>
+            <button class="clickable searchButton" data-bind="click: reset">Favorites</button>
+            <button class="clickable searchButton" data-bind="click: reset">Reset</button> -->
+            <select data-bind="options: searchOptions, value: chosenSearch"></select>
             <button class="clickable searchButton" data-bind="click: filter">Filter</button>
-            <button class="clickable searchButton" data-bind="click: reset">Reset</button>
         </div>
 
         <div data-bind="foreach: locationList">
             <div class="link">
                 <a class="clickable" data-bind="text: address, click: $parent.infowindow, visible: searchVisible"></a>
-                <a data-bind="css: {'favorited': favorite}"><i class="clickable favorite fa fa-star" data-bind="click: $parent.favorite.bind($data)"></i></a>
+                <a data-bind="css: {'favorited': favorited}, visible: searchVisible"><i class="clickable favorite fa fa-star" data-bind="click: $parent.favoriteLink.bind($data)"></i></a>
             </div>
         </div>
     </div>
