@@ -8,7 +8,8 @@ var mapFunctions = (function() {
             position: location.geometry.location,
             map: map,
             animation: google.maps.Animation.DROP,
-            title: location.formatted_address
+            title: location.formatted_address,
+            icon: "http://www.googlemapsmarkers.com/v1/FF0000/"
         });
 
         marker.addListener('click', function() {
@@ -37,6 +38,7 @@ var mapFunctions = (function() {
             });
     }
 
+    //Toggle infowindow open/close
     function markerSelected(marker) {
         if (marker.getAnimation() !== null) {
             marker.setAnimation(null);
@@ -162,6 +164,7 @@ var mapFunctions = (function() {
             for (var i = 0; i < markers.length; i++) {
                 if (markers[i].title === address) {
                     markerSelected(markers[i]);
+                    //markers[i].setIcon("http://www.googlemapsmarkers.com/v1/0000FF/");
                 }
             }
         },
@@ -171,6 +174,20 @@ var mapFunctions = (function() {
         showMarkers: function() {
             for (var i = 0; i < markers.length; i++) {
                 markers[i].setMap(map);
+            }
+        },
+        favoriteMarker: function(address) {
+            for (var i = 0; i < markers.length; i++) {
+                if (markers[i].title === address) {
+                    markers[i].setIcon("http://www.googlemapsmarkers.com/v1/0000FF/");
+                }
+            }
+        },
+        unFavoriteMarker: function(address) {
+            for (var i = 0; i < markers.length; i++) {
+                if (markers[i].title === address) {
+                    markers[i].setIcon("http://www.googlemapsmarkers.com/v1/FF0000/");
+                }
             }
         }
     }

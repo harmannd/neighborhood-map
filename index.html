@@ -6,6 +6,7 @@
 
     <title>Map</title>
 
+    <link rel="stylesheet" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -18,7 +19,10 @@
         </div>
 
         <div data-bind="foreach: locationList">
-            <a class="clickable" data-bind="text: address, click: $parent.infowindow, visible: searchVisible"></a>
+            <div class="link">
+                <a class="clickable" data-bind="text: address, click: $parent.infowindow, visible: searchVisible"></a>
+                <a data-bind="css: {'favorited': favorite}"><i class="clickable favorite fa fa-star" data-bind="click: $parent.favorite.bind($data)"></i></a>
+            </div>
         </div>
     </div>
 

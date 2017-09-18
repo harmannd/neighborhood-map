@@ -30,6 +30,7 @@ var googleSuccess = function() {
     var Location = function(data) {
         this.address = ko.observable(data.address);
         this.searchVisible = ko.observable(true);
+        this.favorite = ko.observable(false);
     }
 
     var ViewModel = function() {
@@ -88,11 +89,21 @@ var googleSuccess = function() {
                     addressesSet = true;
                 }
             }
-
         }
 
         self.infowindow = function() {
             mapFunctions.openInfoWindow(this.address());
+        }
+
+        self.favorite = function() {
+            if (this.favorite()) {
+                this.favorite(false);
+                mapFunctions.unFavoriteMarker(this.address());
+            }
+            else {
+                this.favorite(true);
+                mapFunctions.favoriteMarker(this.address());
+            }
         }
 
         mapFunctions.initMap(self);
