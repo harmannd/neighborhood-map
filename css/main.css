@@ -1,3 +1,6 @@
+/*
+* General
+*/
 html, body {
     height: 100%;
     margin: 0;
@@ -5,11 +8,29 @@ html, body {
     background-color: #594f4f;
 }
 
-#title {
-    color: #547980;
-    margin-top: 8px;
+/*
+* Nav Menu
+*/
+.sidenav {
+    height: 100%;
+    width: 0px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 10px;
+    background-color: #594f4f;
+    overflow-x: hidden;
 }
-
+.sidenav a {
+    padding: 8px 8px 8px 8px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #e5fcc2;
+    display: block;
+}
+.sidenav a:hover {
+    color: #9de0ad;
+}
 #hamburger {
     background-image: url("../images/hamburger.svg");
     width: 33px;
@@ -23,43 +44,38 @@ html, body {
     margin-top: 10px;
 }
 
+/*
+* Nav Menu Contents
+*/
+#title {
+    color: #547980;
+    margin-top: 8px;
+}
 .searchButton {
     background-color: #594f4f;
     border: none;
     color: #e5fcc2;
 }
-
 .searchButton:hover {
     background-color: #547980;
 }
-
 .clickable:hover {
     cursor: pointer;
 }
-
-.sidenav {
-    height: 100%;
-    width: 0px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 10px;
-    background-color: #594f4f;
-    overflow-x: hidden;
+.link {
+    display: flex;
+    align-items: center;
+}
+.favorite {
+    margin-right: 10px;
+}
+.favorited {
+    color: #547980 !important;
 }
 
-.sidenav a {
-    padding: 8px 8px 8px 8px;
-    text-decoration: none;
-    font-size: 18px;
-    color: #e5fcc2;
-    display: block;
-}
-
-.sidenav a:hover {
-    color: #9de0ad;
-}
-
+/*
+* Map
+*/
 #map {
     bottom:0px;
     top: 50px;
@@ -69,15 +85,3 @@ html, body {
     right: 0px;
 }
 
-.link {
-    display: flex;
-    align-items: center;
-}
-
-.favorite {
-    margin-right: 10px;
-}
-
-.favorited {
-    color: #547980 !important;
-}
