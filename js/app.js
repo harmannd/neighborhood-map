@@ -43,7 +43,7 @@ function googleSuccess() {
         this.address = ko.observable(data.address);
         this.searchVisible = ko.observable(true);
         this.favorited = ko.observable(false);
-    }
+    };
 
     /**
     * @description View model for the app.
@@ -168,6 +168,6 @@ function googleSuccess() {
         };
 
         mapFunctions.initMap(self);
-    }
+    };
     ko.applyBindings(new ViewModel());
 }
