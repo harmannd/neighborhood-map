@@ -233,7 +233,7 @@ initMap = () => {
                 'color': '#7dcdcd'
             }
         ]
-    }]
+    }];
 
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13,
