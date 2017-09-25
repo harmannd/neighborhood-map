@@ -105,7 +105,7 @@ const mapFunctions = (function() {
         }
         if (!marker.infowindow) {
             marker.infowindow = new google.maps.InfoWindow({
-                content: 'No infomation found.'
+                content: 'There was a problem getting the information.'
             });
         }
     }
@@ -192,5 +192,5 @@ const mapFunctions = (function() {
                 }
             }
         }
-    }
+    };
 }());
