@@ -1,4 +1,4 @@
-# neighborhood-map: A map application showing several marked locations that utilizes several third-party APIs and libraries.
+# neighborhood-map: A map application featuring highlighted locations with third-party data and dynamic ways to browse that content.
 ### Features
 * Google Maps API
 * Google Geocode API
