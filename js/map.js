@@ -2,9 +2,8 @@
 * @description Container for minipulating the google map.
 */
 const mapFunctions = (function() {
-    let map;
     let markers = [];
-    let infoWindows = {};
+    let infoWindows = [];
 
     /**
     * @description Creates a google map marker at given location.
@@ -38,16 +37,34 @@ const mapFunctions = (function() {
             .done(function(data) {
                 const latlng2 = String(data.response.venues[0].location.lat).substring(0, 5) +
                     ',' + String(data.response.venues[0].location.lng).substring(0, 6);
-                infoWindows[latlng2] = '<h1>' + data.response.venues[0].name + '</h1>' +
-                    '<div>Address: ' + data.response.venues[0].location.address + '</div>' +
-                    '<div>Phone: ' + data.response.venues[0].contact.formattedPhone + '</div>' +
-                    '<div>URL: ' + data.response.venues[0].url + '</div>' +
-                    '<div>Checkins: ' + data.response.venues[0].stats.checkinsCount + '</div>' +
-                    '<div>Information provided by Foursquare.</div>';
+                const title = data.response.venues[0].name || 'No title provided.';
+                const address = data.response.venues[0].location.address || 'No address provided';
+                const phone = data.response.venues[0].contact.formattedPhone || 'No phone provided';
+                const url = data.response.venues[0].url || 'No URL provided';
+                const checkins = data.response.venues[0].stats.checkinsCount || 'No checkin count provided';
+                infoWindows[latlng2] =
+                    '<section style="width: 350px">' +
+                    '<h1>' + title + '</h1>' +
+                    '<div>Address: ' + address + '</div>' +
+                    '<div>Phone: ' + phone + '</div>' +
+                    '<div>URL: ' + url + '</div>' +
+                    '<div>Checkins: ' + checkins + '</div>' +
+                    '<div style="float: right">Powered by Foursquare</div></section>';
             })
-            .fail(function(data) {
-                infoWindows.push('<h1>Data could not be retrieved. Please try again later.</h1>');
-            });
+    }
+
+    /**
+    * @description Creates and opens the infowindow for the marker.
+    * @param {object} marker - The google map marker
+    */
+    function createInfowindow(marker) {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        window.setTimeout(function() {
+            marker.setAnimation(null);
+        }, 700);
+        determineInfowindow(marker);
+        marker.infowindow.open(map, marker);
+        marker.infowindow.opened = true;
     }
 
     /**
@@ -55,13 +72,16 @@ const mapFunctions = (function() {
     * @param {object} marker - The google map marker
     */
     function markerSelected(marker) {
-        if (marker.getAnimation() !== null) {
-            marker.setAnimation(null);
-            marker.infowindow.close();
+        if (typeof marker.infowindow === "undefined") {
+            createInfowindow(marker);
         } else {
-            marker.setAnimation(google.maps.Animation.BOUNCE);
-            determineInfowindow(marker);
-            marker.infowindow.open(map, marker);
+            if (marker.infowindow.opened) {
+                marker.infowindow.close();
+                marker.infowindow.opened = false;
+            }
+            else {
+                createInfowindow(marker);
+            }
         }
     }
 
@@ -71,6 +91,7 @@ const mapFunctions = (function() {
     * @param {object} marker - The google map marker
     */
     function determineInfowindow(marker) {
+        google.maps.InfoWindow.prototype.opened = false;
         const markerPosition = String(marker.position).slice(1, -1);
         const lat = markerPosition.split(',')[0].substring(0, 5);
         const lng = markerPosition.split(',')[1].substring(1, 7);
@@ -82,91 +103,14 @@ const mapFunctions = (function() {
                 });
             }
         }
+        if (!marker.infowindow) {
+            marker.infowindow = new google.maps.InfoWindow({
+                content: 'No infomation found.'
+            });
+        }
     }
 
     return {
-        /**
-        * @description Styles and attaches the google map to the web page.
-        */
-        initMap: function() {
-            const styles = [
-            {
-                'featureType': 'landscape.natural',
-                'elementType': 'geometry.fill',
-                'stylers': [
-                    {
-                        'visibility': 'on'
-                    },
-                    {
-                        'color': '#e0efef'
-                    }
-                ]
-            },
-            {
-                'featureType': 'poi',
-                'elementType': 'geometry.fill',
-                'stylers': [
-                    {
-                        'visibility': 'on'
-                    },
-                    {
-                        'hue': '#1900ff'
-                    },
-                    {
-                        'color': '#c0e8e8'
-                    }
-                ]
-            },
-            {
-                'featureType': 'road',
-                'elementType': 'geometry',
-                'stylers': [
-                    {
-                        'lightness': 100
-                    },
-                    {
-                        'visibility': 'simplified'
-                    }
-                ]
-            },
-            {
-                'featureType': 'road',
-                'elementType': 'labels',
-                'stylers': [
-                    {
-                        'visibility': 'off'
-                    }
-                ]
-            },
-            {
-                'featureType': 'transit.line',
-                'elementType': 'geometry',
-                'stylers': [
-                    {
-                        'visibility': 'on'
-                    },
-                    {
-                        'lightness': 700
-                    }
-                ]
-            },
-            {
-                'featureType': 'water',
-                'elementType': 'all',
-                'stylers': [
-                    {
-                        'color': '#7dcdcd'
-                    }
-                ]
-            }]
-
-            map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 13,
-                styles: styles,
-                center: {lat: 41.8781, lng: -87.6298}
-            });
-        },
-
         /**
         * @description Makes an api call to google geocode and creates
         *              markers and infowindows if a valid address.
